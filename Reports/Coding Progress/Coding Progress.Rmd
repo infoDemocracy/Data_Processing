@@ -1,0 +1,128 @@
+---
+title: "Progress Report"
+author: "infoDemocracy"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(readr)
+library(dplyr)
+library(knitr)
+library(leebunce)
+library(lubridate)
+library(ggplot2)
+
+donations <- read_csv("../../Output/process_data.csv")
+
+```
+
+This report summarises progress made on researching and coding donors.
+
+# 1. Coding progress
+
+This table summaries the progress made in researching individuals and organisations in the donor tables.
+
+## 1.1 Researched
+
+```{r}
+table <- donations %>% 
+  summarise(`Total number` = n()  %>% format(big.mark = ","),
+            `Total value` = sum(dntn_value) %>% format(big.mark = ","),
+            `Researched number` = sum(x_researched) %>% format(big.mark = ","),
+            `Number %` = percent(sum(x_researched)/n()),
+            `Researched value` = sum(dntn_value[x_researched]) %>% format(big.mark = ","),
+            `Value %` = percent(sum(dntn_value[x_researched]) / sum(dntn_value)))
+
+kable(table, align = "c")
+rm(table)
+```
+
+## 1.2 Coded
+
+```{r}
+table <- donations %>% 
+  summarise(`Total number` = n()  %>% format(big.mark = ","),
+            `Total value` = sum(dntn_value) %>% format(big.mark = ","),
+            `Coded number` = sum(x_coded) %>% format(big.mark = ","),
+            `Number %` = percent(sum(x_coded)/n()),
+            `Coded value` = sum(dntn_value[x_coded]) %>% format(big.mark = ","),
+            `Value %` = percent(sum(dntn_value[x_coded]) / sum(dntn_value)))
+
+kable(table, align = "c")
+rm(table)
+```
+
+# 2. Coded by year
+
+The chart below shows the total value of donations per year, anlong with the proportion of that value that has been coded.
+
+```{r warning=FALSE}
+donations %>% 
+  group_by(x_reported_year, Coded = x_coded) %>% 
+  summarise(total = sum(dntn_value)) %>% 
+  ggplot(aes(x_reported_year, total, fill = Coded)) + 
+  geom_bar(stat='identity') +
+  labs(title = 'Total value and proportion coded by year',
+       x = 'Year',
+       y = 'Total value (£)')
+```
+
+# 3. Not coded by recipient
+
+## 3.1 Uncoded donations by recipient
+This table looks at the uncoded donations by recipient. Only the top 6 biggest recipients are shown.
+
+```{r}
+donations %>% 
+  filter(interest_code == 'ZZZZZ') %>% 
+  group_by(Recipient = dntn_regulated_entity_name) %>% 
+  summarise(n = n(),
+         Total = sum(dntn_value)) %>% 
+  arrange(desc(Total)) %>% 
+  mutate(Percent = percent(Total/sum(Total)),
+         Total = format(Total, big.mark = ",")) %>% 
+  head() %>% 
+  kable(align = c('l', 'c', 'c', 'c'))
+```
+
+## 3.2 Percentage coded for key recipients
+
+For recipients who have received over £10 million, this table gives the percentage of donations that have been coded.
+
+```{r}
+donations %>% 
+  group_by(Recipient = dntn_regulated_entity_name) %>% 
+  summarise(Donations = n(),
+            Value = sum(dntn_value),
+            `Value coded` = sum(ifelse(x_coded == T, dntn_value, 0)),
+            `Percent value coded` = percent(sum(ifelse(x_coded == T, dntn_value, 0))/sum(dntn_value))) %>% 
+  filter(Value >= 10000000) %>% 
+  arrange(desc(Value)) %>% 
+  mutate(Donations = format(Donations, big.mark = ','),
+         Value = format(Value, big.mark = ','),
+         `Value coded` = format(`Value coded`, big.mark = ',')) %>% 
+  kable(align = c('l', 'c', 'c', 'c', 'c'))
+
+
+
+```
+
+
+# 4. Sector
+
+```{r}
+
+donations %>% 
+  filter(level_1_description != 'Not yet coded') %>% 
+  group_by(level_1_description) %>% 
+  summarise(Total = sum(dntn_value)) %>% 
+  ggplot(aes(level_1_description, Total)) +
+  geom_bar(stat = 'identity') +
+  coord_flip()
+              
+
+```
+
