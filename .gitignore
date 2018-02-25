@@ -12,4 +12,5 @@
 
 # Except R files
 !*.R
+!*.Rmd
 .Rproj.user
