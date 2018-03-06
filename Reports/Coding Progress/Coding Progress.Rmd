@@ -117,9 +117,9 @@ donations %>%
 
 donations %>% 
   filter(level_1_description != 'Not yet coded') %>% 
-  group_by(level_1_description) %>% 
+  group_by(level_1_short) %>% 
   summarise(Total = sum(dntn_value)) %>% 
-  ggplot(aes(level_1_description, Total)) +
+  ggplot(aes(level_1_short, Total)) +
   geom_bar(stat = 'identity') +
   coord_flip()
               
