@@ -62,6 +62,7 @@ donations <- donations %>%
 
 # Save --------------------------------------------------------------------
 write_csv(donations, 'Output/process_data.csv')
+save(donations, file = 'Output/process_data.Rdata')
 
 # Tidy --------------------------------------------------------------------
 rm(ec_data,
