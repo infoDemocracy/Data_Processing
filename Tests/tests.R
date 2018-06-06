@@ -6,7 +6,7 @@ library(dplyr)
 
 # Data --------------------------------------------------------------------
 source('Scripts/Produce output data.R')
-data <- read_csv("Output/process_data.csv")
+data <- read_csv("Output/info_democracy.csv")
 
 # Remove known errors
 
@@ -52,4 +52,9 @@ test_that('If dntn_donor_status is Public Fund then coded as P1', {
 
 test_that('The code 70100 is not used', {
   expect_false('70100' %in% data$interest_code)
+})
+
+test_that('Every donation is given a valid interest code', {
+  expect_false(NA %in% data$interest_code)
+  expect_false(NA %in% data$level_5_description)
 })
