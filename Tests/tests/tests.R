@@ -1,13 +1,5 @@
 # Tests
 
-# Packages ----------------------------------------------------------------
-library(testthat)
-library(dplyr)
-
-# Data --------------------------------------------------------------------
-source('Scripts/Produce output data.R')
-data <- read_csv("Output/info_democracy.csv")
-
 # Remove known errors
 
 # Tests -------------------------------------------------------------------
@@ -17,6 +9,8 @@ data <- read_csv("Output/info_democracy.csv")
 # - All donations have appropriate date columns
 # - All donations have a donor i.e. donor name not NA (except where unidentified donor).
 # - Donation_donor_link$dntn_ec_ref is same as ec_data$dntn_ec_ref (although note that link file may have more records)
+
+context('Tests')
 
 test_that('If dntn_donor_status is Trade Union then coded as T1', {
   trade_union <- data %>% 
