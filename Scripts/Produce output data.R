@@ -29,12 +29,12 @@ donor_all_na <- donor_all %>%
                                      replacement = ''))
 
 # Interest codes
-level_5 <- read_csv("Data/level_5.csv")
-level_4 <- read_csv("Data/level_4.csv")
-level_3 <- read_csv("Data/level_3.csv")
-level_2 <- read_csv("Data/level_2.csv")
-level_1 <- read_csv("Data/level_1.csv")
-additional_codes <- read_csv('Data/Additional codes.csv')
+level_5 <- read_csv("Data/interest_code_level_5.csv")
+level_4 <- read_csv("Data/interest_code_level_4.csv")
+level_3 <- read_csv("Data/interest_code_level_3.csv")
+level_2 <- read_csv("Data/interest_code_level_2.csv")
+level_1 <- read_csv("Data/interest_code_level_1.csv")
+additional_codes <- read_csv('Data/interest_code_additional_codes.csv')
 
 interest_codes <- level_5 %>% 
   left_join(level_4, 'level_4') %>% 
