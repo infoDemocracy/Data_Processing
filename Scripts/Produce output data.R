@@ -61,8 +61,8 @@ donations <- donations %>%
           str_sub(donor_id, 1, 1) == 'O'  ~ orga_name))
 
 # Save --------------------------------------------------------------------
-write_csv(donations, 'Output/process_data.csv')
-save(donations, file = 'Output/process_data.Rdata')
+write_csv(donations, 'Output/info_democracy.csv')
+save(donations, file = 'Output/info_democracy.Rdata')
 
 # Tidy --------------------------------------------------------------------
 rm(ec_data,

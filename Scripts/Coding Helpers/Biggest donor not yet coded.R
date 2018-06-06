@@ -7,7 +7,7 @@ library(tidyverse)
 source('Scripts/Produce output data.R')
 
 # Data --------------------------------------------------------------------
-donations <- read_csv("Output/process_data.csv")
+donations <- read_csv("Output/info_democracy.csv")
 
 # Not yet coded -----------------------------------------------------------
 not_yet_coded <- donations %>% 

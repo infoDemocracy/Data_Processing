@@ -11,7 +11,7 @@ library(dplyr)
 source('Scripts/Produce output data.R')
 
 # Data --------------------------------------------------------------------
-donations <- read_csv("Output/process_data.csv")
+donations <- read_csv("Output/info_democracy.csv")
 
 # Find errors -------------------------------------------------------------
 errors <- donations %>% 
