@@ -9,16 +9,16 @@
 # - All donations have appropriate date columns
 # - All donations have a donor i.e. donor name not NA (except where unidentified donor).
 
-context('Tests')
+context("Tests")
 
-test_that('Every donation in ec_data is is donation_donor_link data', {
+test_that("Every donation in ec_data is is donation_donor_link data", {
   missing_donations <- ec_data %>% 
     anti_join(donation_donor_link, by = "dntn_ec_ref")
   
   expect_equal(nrow(missing_donations), 0)
 })
 
-test_that('If dntn_donor_status is Trade Union then coded as T1', {
+test_that("If dntn_donor_status is 'Trade Union' then coded as T1", {
   trade_union <- data %>% 
     filter(dntn_donor_status == 'Trade Union',
            level_1 != 'T1') %>% 
@@ -34,7 +34,7 @@ test_that('If dntn_donor_status is Trade Union then coded as T1', {
 
 })
 
-test_that('If dntn_donor_status is Public Fund then coded as P1', {
+test_that("If dntn_donor_status is 'Public Fund' then coded as P1", {
   public_fund <- data %>% 
     filter(dntn_donor_status == 'Public Fund',
            level_1 != 'P1') %>% 
@@ -50,11 +50,11 @@ test_that('If dntn_donor_status is Public Fund then coded as P1', {
   
 })
 
-test_that('The code 70100 is not used', {
+test_that("The code 70100 is not used", {
   expect_false('70100' %in% data$interest_code)
 })
 
-test_that('Every donation is given a valid interest code', {
+test_that("Every donation is given a valid interest code", {
   expect_false(NA %in% data$interest_code)
   expect_false(NA %in% data$level_5_description)
 })
