@@ -10,7 +10,7 @@ library(dplyr)
 source('Scripts/Produce output data.R')
 
 # Data --------------------------------------------------------------------
-donations <- read_csv("Output/info_democracy.csv")
+load("Output/info_democracy.Rdata")
 
 # New donations -----------------------------------------------------------
 donations_old <- donations %>% 
