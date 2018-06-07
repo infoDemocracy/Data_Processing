@@ -6,7 +6,6 @@
 
 # Test that:
 # - organisations with different registration numbers aren't grouped
-# - All donations have appropriate date columns
 # - All donations have a donor i.e. donor name not NA (except where unidentified donor).
 
 context("Tests")
@@ -57,4 +56,11 @@ test_that("The code 70100 is not used", {
 test_that("Every donation is given a valid interest code", {
   expect_false(NA %in% data$interest_code)
   expect_false(NA %in% data$level_5_description)
+})
+
+test_that("Every donation has a date field", {
+  missing_date <- data %>% 
+    filter(is.na(dntn_received_date) & is.na(dntn_accepted_date) & is.na(dntn_reported_date))
+  
+  expect_equal(nrow(missing_date), 0)
 })
