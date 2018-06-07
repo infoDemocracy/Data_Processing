@@ -58,7 +58,12 @@ donations <- donations %>%
          x_reported_year = year(dntn_reported_date),
          x_donor_name = case_when(
           str_sub(donor_id, 1, 1) == 'I'  ~ paste(ifelse(is.na(title), '', title), first_name, last_name),
-          str_sub(donor_id, 1, 1) == 'O'  ~ orga_name))
+          str_sub(donor_id, 1, 1) == 'O'  ~ orga_name),
+         x_donation_date = case_when(
+           !is.na(dntn_received_date) ~ dntn_received_date,
+           !is.na(dntn_accepted_date) ~ dntn_accepted_date,
+           !is.na(dntn_reported_date) ~ dntn_reported_date
+         ))
 
 # Save --------------------------------------------------------------------
 write_csv(donations, 'Output/info_democracy.csv')
