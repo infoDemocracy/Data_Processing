@@ -8,17 +8,18 @@ library(leebunce)
 source('Scripts/Produce output data.R')
 
 # Data --------------------------------------------------------------------
-donations <- read_csv("Output/info_democracy.csv")
+load("Output/info_democracy.Rdata")
 
 # Not yet coded -----------------------------------------------------------
 not_yet_coded <- donations %>% 
   filter(interest_code == 'ZZZZZ',
          !is.na(donor_id)) %>% # Focus on those that have already been researched
   group_by(donor_id, x_donor_name) %>%
-  summarise(Total = sum(dntn_value)) %>%
+  summarise(n = n(),
+            Total = sum(dntn_value)) %>%
   arrange(-Total) %>% 
   ungroup() %>% 
-  mutate(Percent = percent(Total/sum(Total), digits = 2),
+  mutate(Percent = percent(Total/sum(Total), digits = 3),
          `Cumulative percent` = cumsum(Percent),
          Total = format(Total, big.mark = ","))
 

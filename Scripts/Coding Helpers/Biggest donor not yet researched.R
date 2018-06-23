@@ -7,13 +7,18 @@ library(tidyverse)
 source('Scripts/Produce output data.R')
 
 # Data --------------------------------------------------------------------
-donations <- read_csv("Output/info_democracy.csv")
+load("Output/info_democracy.Rdata")
 
 # Not yet researched ------------------------------------------------------
 not_yet_researched <- donations %>% 
-  filter(is.na(donor_id)) %>% 
+  filter(is.na(donor_id),
+         !is.na(dntn_donor_name)) %>% 
   group_by(dntn_donor_name, dntn_company_registration_number) %>% 
-  summarise(Value = sum(dntn_value)) %>% 
-  arrange(-Value)
+  summarise(n = n(),
+            Total = sum(dntn_value)) %>% 
+  ungroup() %>% 
+  arrange(-Total) %>% 
+  mutate(Percent = percent(Total/sum(Total), digits = 3),
+         `Cumulative percent` = cumsum(Percent))
 
 View(not_yet_researched)
