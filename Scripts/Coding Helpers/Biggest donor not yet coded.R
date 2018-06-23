@@ -2,6 +2,7 @@
 
 # Setup -------------------------------------------------------------------
 library(tidyverse)
+library(leebunce)
 
 # Update data file --------------------------------------------------------
 source('Scripts/Produce output data.R')
@@ -16,6 +17,9 @@ not_yet_coded <- donations %>%
   group_by(donor_id, x_donor_name) %>%
   summarise(Total = sum(dntn_value)) %>%
   arrange(-Total) %>% 
-  mutate(Total = format(Total, big.mark = ","))
+  ungroup() %>% 
+  mutate(Percent = percent(Total/sum(Total), digits = 2),
+         `Cumulative percent` = cumsum(Percent),
+         Total = format(Total, big.mark = ","))
 
 View(not_yet_coded)
