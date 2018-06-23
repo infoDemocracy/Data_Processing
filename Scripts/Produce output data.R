@@ -47,6 +47,10 @@ interest_codes <- level_5 %>%
 
 donations <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
   left_join(donor_all_na, by = "donor_id") %>% 
+  mutate(interest_code = case_when(
+    is.na(dntn_donor_name) ~ 'XXXXX',
+    TRUE ~ interest_code
+  )) %>% 
   replace_na(list(interest_code = 'ZZZZZ')) %>% 
   left_join(interest_codes, by = c('interest_code' = 'level_5'))
 
