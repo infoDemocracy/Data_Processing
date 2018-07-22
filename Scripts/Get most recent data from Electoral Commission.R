@@ -5,6 +5,7 @@
 
 # Packages ----------------------------------------------------------------
 library(dplyr)
+library(tibble)
 library(readr)
 library(httr)
 library(stringr)
@@ -17,7 +18,7 @@ ec_data <- GET('http://search.electoralcommission.org.uk/api/csv/Donations',
                             prePoll = "true",
                             postPoll = "true")) %>% 
   content("parsed") %>% 
-  as.data.frame() %>% 
+  as_tibble() %>% 
   rename(dntn_ec_ref = ECRef,
          dntn_regulated_entity_name = RegulatedEntityName,
          dntn_regulated_entity_type = RegulatedEntityType,
@@ -44,7 +45,12 @@ ec_data <- GET('http://search.electoralcommission.org.uk/api/csv/Donations',
          dntn_regulated_entity_id = RegulatedEntityId,
          dntn_accounting_unit_id = AccountingUnitId,
          dntn_donor_id = DonorId,
-         dntn_campaigning_name = CampaigningName) %>%
+         dntn_campaigning_name = CampaigningName,
+         dntn_register_name = RegisterName,
+         dntn_is_irish_source = IsIrishSource) %>%
+  replace_na(list(
+    dntn_is_reported_pre_poll = 'Normal'
+  )) %>% 
   mutate(dntn_value = as.numeric(str_replace_all(dntn_value, '[\\£|,]', '')),
          dntn_accepted_date = dmy(dntn_accepted_date),
          dntn_received_date = dmy(dntn_received_date),
