@@ -44,7 +44,6 @@ interest_codes <- level_5 %>%
   bind_rows(additional_codes)
 
 # Join --------------------------------------------------------------------
-
 donations <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
   left_join(donor_all_na, by = "donor_id") %>% 
   mutate(interest_code = case_when(
@@ -53,6 +52,19 @@ donations <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>%
   )) %>% 
   replace_na(list(interest_code = 'ZZZZZ')) %>% 
   left_join(interest_codes, by = c('interest_code' = 'level_5'))
+
+# Manual fixes ------------------------------------------------------------
+donations <- donations %>% 
+  mutate(
+    dntn_accepted_date = case_when(
+    dntn_ec_ref == 'C0314887' ~ as_date('2016-06-17'),
+    TRUE ~ dntn_accepted_date
+    ),
+    dntn_received_date = case_when(
+      dntn_ec_ref == 'C0314887' ~ as_date('2016-06-17'),
+      TRUE ~ dntn_received_date
+    )
+  )
 
 # Derived fields ----------------------------------------------------------
 
