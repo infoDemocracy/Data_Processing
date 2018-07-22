@@ -122,7 +122,6 @@ donations %>%
   ggplot(aes(level_1_short, Total)) +
   geom_bar(stat = 'identity') +
   coord_flip()
-              
 
 ```
 
