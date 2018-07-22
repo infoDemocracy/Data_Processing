@@ -18,7 +18,7 @@ test_that("Every donation in ec_data is is donation_donor_link data", {
 })
 
 test_that("If dntn_donor_status is 'Trade Union' then coded as T1", {
-  trade_union <- data %>% 
+  trade_union <- donations %>% 
     filter(dntn_donor_status == 'Trade Union',
            level_1 != 'T1') %>% 
     select(dntn_ec_ref,
@@ -33,8 +33,24 @@ test_that("If dntn_donor_status is 'Trade Union' then coded as T1", {
 
 })
 
+test_that("If coded as T1 then dntn_donor_status is 'Trade Union'", {
+  trade_union <- donations %>% 
+    filter(level_1 == 'T1',
+           dntn_donor_status != 'Trade Union') %>% 
+    select(dntn_ec_ref,
+           dntn_regulated_entity_name,
+           dntn_donor_name,
+           dntn_donor_status,
+           donor_id,
+           level_1,
+           dntn_value)
+  
+  expect_equal(nrow(trade_union), 0) 
+  
+})
+
 test_that("If dntn_donor_status is 'Public Fund' then coded as P1", {
-  public_fund <- data %>% 
+  public_fund <- donations %>% 
     filter(dntn_donor_status == 'Public Fund',
            level_1 != 'P1') %>% 
     select(dntn_ec_ref,
@@ -49,17 +65,33 @@ test_that("If dntn_donor_status is 'Public Fund' then coded as P1", {
   
 })
 
+test_that("If coded as P1 then dntn_donor_status is 'Public Fund'", {
+  public_fund <- donations %>% 
+    filter(level_1 == 'P1',
+           dntn_donor_status != 'Public Fund') %>% 
+    select(dntn_ec_ref,
+           dntn_regulated_entity_name,
+           dntn_donor_name,
+           dntn_donor_status,
+           donor_id,
+           level_1,
+           dntn_value)
+  
+  expect_equal(nrow(public_fund), 0) 
+  
+})
+
 test_that("The code 70100 is not used", {
-  expect_false('70100' %in% data$interest_code)
+  expect_false('70100' %in% donations$interest_code)
 })
 
 test_that("Every donation is given a valid interest code", {
-  expect_false(NA %in% data$interest_code)
-  expect_false(NA %in% data$level_5_description)
+  expect_false(NA %in% donations$interest_code)
+  expect_false(NA %in% donations$level_5_description)
 })
 
 test_that("Every donation has a date field", {
-  missing_date <- data %>% 
+  missing_date <- donations %>% 
     filter(is.na(dntn_received_date) & is.na(dntn_accepted_date) & is.na(dntn_reported_date))
   
   expect_equal(nrow(missing_date), 0)
