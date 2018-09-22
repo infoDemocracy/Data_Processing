@@ -49,9 +49,6 @@ ec_data <- GET('http://search.electoralcommission.org.uk/api/csv/Donations',
          dntn_campaigning_name = CampaigningName,
          dntn_register_name = RegisterName,
          dntn_is_irish_source = IsIrishSource) %>%
-  replace_na(list(
-    dntn_is_reported_pre_poll = 'Normal'
-  )) %>% 
   mutate(dntn_value = as.numeric(str_replace_all(dntn_value, '[\\£|,]', '')),
          dntn_accepted_date = dmy(dntn_accepted_date),
          dntn_received_date = dmy(dntn_received_date),

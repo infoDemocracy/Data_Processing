@@ -66,6 +66,15 @@ donations <- donations %>%
     )
   )
 
+# Fix pre-poll
+
+donations <- donations %>% 
+  mutate(dntn_is_reported_pre_poll = case_when(
+    dntn_is_reported_pre_poll == 'True' ~ TRUE,
+    str_detect(dntn_reporting_period_name, '[Pp]re-[Pp]oll') ~ TRUE,
+    TRUE ~ FALSE
+  ))
+
 # Derived fields ----------------------------------------------------------
 
 donations <- donations %>% 
