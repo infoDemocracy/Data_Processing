@@ -81,7 +81,7 @@ donations <- donations %>%
   mutate(x_researched = !is.na(donor_id),
          x_coded = interest_code != 'ZZZZZ',
          x_donor_name = case_when(
-          str_sub(donor_id, 1, 1) == 'I'  ~ paste(ifelse(is.na(title), '', title), first_name, last_name),
+          str_sub(donor_id, 1, 1) == 'I'  ~ paste0(ifelse(is.na(title), '', paste0(title, ' ')), first_name, ' ', last_name),
           str_sub(donor_id, 1, 1) == 'O'  ~ orga_name),
          x_donation_date = case_when(
            !is.na(dntn_received_date) ~ dntn_received_date,
