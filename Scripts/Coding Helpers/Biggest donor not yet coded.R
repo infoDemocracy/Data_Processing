@@ -5,7 +5,7 @@ library(tidyverse)
 library(leebunce)
 
 # Update data file --------------------------------------------------------
-source('Scripts/Produce output data.R')
+source('Scripts/Data processing/2 - Produce output data.R')
 
 # Data --------------------------------------------------------------------
 load("Output/info_democracy.Rdata")
