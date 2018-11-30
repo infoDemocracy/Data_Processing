@@ -61,9 +61,9 @@ The chart below shows the total value of donations per year, anlong with the pro
 
 ```{r warning=FALSE}
 donations %>% 
-  group_by(x_reported_year, Coded = x_coded) %>% 
+  group_by(x_donation_year, Coded = x_coded) %>% 
   summarise(total = sum(dntn_value)) %>% 
-  ggplot(aes(x_reported_year, total, fill = Coded)) + 
+  ggplot(aes(x_donation_year, total, fill = Coded)) + 
   geom_bar(stat='identity') +
   labs(title = 'Total value and proportion coded by year',
        x = 'Year',
