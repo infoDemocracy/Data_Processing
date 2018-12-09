@@ -21,8 +21,8 @@ donation_donor_link <- read_csv("Data/donation_donor_link.csv") %>%
 donor_individual <- read_csv("Data/donor_individual.csv")
 donor_organisations <- read_csv("Data/donor_organisations.csv")
 
-donor_all <- bind_rows(donor_individual, donor_organisations)
-donor_all_na <- donor_all %>%
+donors <- bind_rows(donor_individual, donor_organisations) %>% 
+  donors_all %>%
   filter(!is.na(donor_id)) %>% 
   mutate(interest_code = str_replace(interest_code,
                                      pattern = '^_',
@@ -45,7 +45,7 @@ interest_codes <- level_5 %>%
 
 # Join --------------------------------------------------------------------
 donations <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
-  left_join(donor_all_na, by = "donor_id") %>% 
+  left_join(donors, by = "donor_id") %>% 
   mutate(interest_code = case_when(
     is.na(dntn_donor_name) ~ 'XXXXX',
     TRUE ~ interest_code
@@ -67,7 +67,6 @@ donations <- donations %>%
   )
 
 # Fix pre-poll
-
 donations <- donations %>% 
   mutate(dntn_is_reported_pre_poll = case_when(
     dntn_is_reported_pre_poll == 'True' ~ TRUE,
@@ -76,7 +75,6 @@ donations <- donations %>%
   ))
 
 # Derived fields ----------------------------------------------------------
-
 donations <- donations %>% 
   mutate(x_researched = !is.na(donor_id),
          x_coded = interest_code != 'ZZZZZ',
@@ -92,16 +90,23 @@ donations <- donations %>%
          )
 
 # Save --------------------------------------------------------------------
-write_csv(donations, 'Output/info_democracy.csv')
-save(donations, file = 'Output/info_democracy.Rdata')
+
+# Donations
+write_csv(donations, 'Output/csv/info_democracy.csv')
+save(donations, file = 'Output/Rdata/info_democracy.Rdata')
+
+# Donors
+save(donors, file = 'Output/Rdata/donors.Rdata')
+
+# Interest codes
+save(interest_codes, file = 'Output/Rdata/interest_codes.Rdata')
 
 # Tidy --------------------------------------------------------------------
 rm(ec_data,
    donation_donor_link,
    donor_individual,
    donor_organisations,
-   donor_all,
-   donor_all_na,
+   donors,
    level_1,
    level_2,
    level_3,
