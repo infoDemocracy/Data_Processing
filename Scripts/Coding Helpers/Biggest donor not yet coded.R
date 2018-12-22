@@ -8,7 +8,7 @@ library(leebunce)
 source('Scripts/Data processing/2 - Produce output data.R')
 
 # Data --------------------------------------------------------------------
-load("Output/info_democracy.Rdata")
+load("Output/Rdata/info_democracy.Rdata")
 
 # Not yet coded -----------------------------------------------------------
 not_yet_coded <- donations %>% 
