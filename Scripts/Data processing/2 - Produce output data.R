@@ -22,7 +22,6 @@ donor_individual <- read_csv("Data/donor_individual.csv")
 donor_organisations <- read_csv("Data/donor_organisations.csv")
 
 donors <- bind_rows(donor_individual, donor_organisations) %>% 
-  donors_all %>%
   filter(!is.na(donor_id)) %>% 
   mutate(interest_code = str_replace(interest_code,
                                      pattern = '^_',
