@@ -10,7 +10,7 @@ library(dplyr)
 source('Scripts/Data processing/2 - Produce output data.R')
 
 # Data --------------------------------------------------------------------
-load("Output/info_democracy.Rdata")
+load("Output/Rdata/info_democracy.Rdata")
 
 # New donations -----------------------------------------------------------
 donations_old <- donations %>% 
@@ -21,7 +21,8 @@ returning_donors <- donations %>%
   semi_join(donations_old, by = 'dntn_donor_name') %>% 
   select(dntn_donor_name, dntn_value) %>% 
   group_by(dntn_donor_name) %>% 
-  summarise(value = sum(dntn_value)) %>% 
+  summarise(n = n(),
+              value = sum(dntn_value)) %>% 
   arrange(-value)
 
 View(returning_donors)
