@@ -31,3 +31,6 @@ errors_info_democracy <- get_errors(donations, validator_info_democracy, key = "
 file.remove(list.files('Validation/Errors', full.names = T))
 if(nrow(errors_ec_data) > 0) write_csv(errors_ec_data, 'Validation/Errors/errors_ec_data.csv')
 if(nrow(errors_info_democracy) > 0) write_csv(errors_info_democracy, 'Validation/Errors/errors_info_democracy.csv')
+
+print(paste('There are', nrow(errors_ec_data), 'errors in the ec_data file.'))
+print(paste('There are', nrow(errors_info_democracy), 'errors in the info_democracy file.'))
