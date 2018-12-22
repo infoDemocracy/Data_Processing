@@ -22,7 +22,7 @@ returning_donors <- donations %>%
   select(dntn_donor_name, dntn_value) %>% 
   group_by(dntn_donor_name) %>% 
   summarise(n = n(),
-              value = sum(dntn_value)) %>% 
+            value = sum(dntn_value)) %>% 
   arrange(-value)
 
 View(returning_donors)
