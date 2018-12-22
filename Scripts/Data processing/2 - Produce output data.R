@@ -100,6 +100,9 @@ save(donors, file = 'Output/Rdata/donors.Rdata')
 # Interest codes
 save(interest_codes, file = 'Output/Rdata/interest_codes.Rdata')
 
+# Donation-Donor link
+save(donation_donor_link, file = 'Output/Rdata/donation_donor_link.Rdata')
+
 # Tidy --------------------------------------------------------------------
 rm(ec_data,
    donation_donor_link,
