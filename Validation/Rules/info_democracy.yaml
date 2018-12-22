@@ -1,0 +1,37 @@
+rules:
+-
+  expr: ((dntn_donor_status == 'Trade Union' & level_1 == 'T1') | (dntn_donor_status != 'Trade Union'))
+  name: error1
+  label: If Trade Union coded as T1
+  description: |
+   If dntn_donor_status is 'Trade Union' then coded as T1.
+-
+  expr: ((dntn_donor_status == 'Trade Union' & level_1 == 'T1') | (level_1 != 'T1'))
+  name: error2
+  label: If coded as T1 then Trade Union
+  description: |
+   If coded as 'T1' then dntn_donor_status is 'Trade Union'.
+-
+  expr: ((dntn_donor_status == 'Public Fund' & level_1 == 'P1') | (dntn_donor_status != 'Public Fund'))
+  name: error3
+  label: If public Fund coded as P1
+  description: |
+   If dntn_donor_status is 'Public Fund' then coded as P1.
+-
+  expr: ((dntn_donor_status == 'Public Fund' & level_1 == 'P1') | (level_1 != 'P1'))
+  name: error4
+  label: If coded as P1 then Public Fund
+  description: |
+   If coded as 'P1' then dntn_donor_status is 'Public Fund'.
+-
+  expr: level_1 != '70100'
+  name: error5
+  label: SOC Code '70100' is not used
+  description: |
+   The SOC code '70100' should not be used.
+-
+  expr: '!is.na(level_5_description)'
+  name: error6
+  label: Record has valid interest code
+  description: |
+   Every record has a valid interest code.

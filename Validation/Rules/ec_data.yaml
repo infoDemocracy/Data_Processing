@@ -1,0 +1,20 @@
+rules:
+- 
+  expr: sum(duplicated(.$dntn_ec_ref)) == 0
+  name: error1
+  label: No duplicate reference numbers
+  description: |
+   There should be no duplicate reference numbers in the data.
+-
+  expr: '!is.na(dntn_regulated_entity_name)'
+  name: error2
+  label: Entity name should not be missing
+  description: |
+    The regulated entity name should not be missing.
+-
+  expr: '!(is.na(dntn_received_date) & is.na(dntn_accepted_date) & is.na(dntn_reported_date))'
+  name: error3
+  label: There should be a date
+  description: |
+    Every donation should have a received date, accepted date or reported date.
+
