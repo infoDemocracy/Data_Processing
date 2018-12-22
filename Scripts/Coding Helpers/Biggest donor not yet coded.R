@@ -11,7 +11,7 @@ source('Scripts/Data processing/2 - Produce output data.R')
 load("Output/Rdata/info_democracy.Rdata")
 
 # Not yet coded -----------------------------------------------------------
-not_yet_coded <- donations %>% 
+not_yet_coded <- info_democracy %>% 
   filter(interest_code == 'ZZZZZ',
          !is.na(donor_id)) %>% # Focus on those that have already been researched
   group_by(donor_id, x_donor_name) %>%

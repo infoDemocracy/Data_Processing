@@ -25,7 +25,7 @@ get_errors <- function(df, rules, key){
 
 # Validate ----------------------------------------------------------------
 errors_ec_data <- get_errors(ec_data, validator_ec_data, key = "dntn_ec_ref")
-errors_info_democracy <- get_errors(donations, validator_info_democracy, key = "dntn_ec_ref")
+errors_info_democracy <- get_errors(info_democracy, validator_info_democracy, key = "dntn_ec_ref")
 
 # Print errors ------------------------------------------------------------
 file.remove(list.files('Validation/Errors', full.names = T))

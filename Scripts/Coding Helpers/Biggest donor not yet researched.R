@@ -11,7 +11,7 @@ source('Scripts/Data processing/2 - Produce output data.R')
 load("Output/info_democracy.Rdata")
 
 # Not yet researched ------------------------------------------------------
-not_yet_researched <- donations %>% 
+not_yet_researched <- info_democracy %>% 
   filter(is.na(donor_id),
          !is.na(dntn_donor_name)) %>% 
   group_by(dntn_donor_name, dntn_company_registration_number) %>% 

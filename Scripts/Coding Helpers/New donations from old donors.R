@@ -13,10 +13,10 @@ source('Scripts/Data processing/2 - Produce output data.R')
 load("Output/Rdata/info_democracy.Rdata")
 
 # New donations -----------------------------------------------------------
-donations_old <- donations %>% 
+donations_old <- info_democracy %>% 
   filter(!is.na(donor_id))
 
-returning_donors <- donations %>% 
+returning_donors <- info_democracy %>% 
   filter(is.na(donor_id)) %>% 
   semi_join(donations_old, by = 'dntn_donor_name') %>% 
   select(dntn_donor_name, dntn_value) %>% 
@@ -28,4 +28,4 @@ returning_donors <- donations %>%
 View(returning_donors)
 
 # Tidy --------------------------------------------------------------------
-rm(donations_old)
+rm(info_democracy, donations_old)

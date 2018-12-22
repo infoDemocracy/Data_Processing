@@ -43,7 +43,7 @@ interest_codes <- level_5 %>%
   bind_rows(additional_codes)
 
 # Join --------------------------------------------------------------------
-donations <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
+info_democracy <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
   left_join(donors, by = "donor_id") %>% 
   mutate(interest_code = case_when(
     is.na(dntn_donor_name) ~ 'XXXXX',
@@ -53,7 +53,7 @@ donations <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>%
   left_join(interest_codes, by = c('interest_code' = 'level_5'))
 
 # Manual fixes ------------------------------------------------------------
-donations <- donations %>% 
+info_democracy <- info_democracy %>% 
   mutate(
     dntn_accepted_date = case_when(
     dntn_ec_ref == 'C0314887' ~ as_date('2016-06-17'),
@@ -66,7 +66,7 @@ donations <- donations %>%
   )
 
 # Fix pre-poll
-donations <- donations %>% 
+info_democracy <- info_democracy %>% 
   mutate(dntn_is_reported_pre_poll = case_when(
     dntn_is_reported_pre_poll == 'True' ~ TRUE,
     str_detect(dntn_reporting_period_name, '[Pp]re-[Pp]oll') ~ TRUE,
@@ -74,7 +74,7 @@ donations <- donations %>%
   ))
 
 # Derived fields ----------------------------------------------------------
-donations <- donations %>% 
+info_democracy <- info_democracy %>% 
   mutate(x_researched = !is.na(donor_id),
          x_coded = interest_code != 'ZZZZZ',
          x_donor_name = case_when(
@@ -91,8 +91,8 @@ donations <- donations %>%
 # Save --------------------------------------------------------------------
 
 # Donations
-write_csv(donations, 'Output/csv/info_democracy.csv')
-save(donations, file = 'Output/Rdata/info_democracy.Rdata')
+write_csv(info_democracy, 'Output/csv/info_democracy.csv')
+save(info_democracy, file = 'Output/Rdata/info_democracy.Rdata')
 
 # Donors
 save(donors, file = 'Output/Rdata/donors.Rdata')
@@ -116,4 +116,4 @@ rm(ec_data,
    level_5,
    additional_codes,
    interest_codes,
-   donations)
+   info_democracy)
