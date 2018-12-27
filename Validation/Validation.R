@@ -1,7 +1,7 @@
 # Validate data
 
 # Packages ----------------------------------------------------------------
-library(tidyverse)
+library(readr)
 library(validate)
 
 # Data --------------------------------------------------------------------

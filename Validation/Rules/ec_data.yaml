@@ -17,4 +17,33 @@ rules:
   label: There should be a date
   description: |
     Every donation should have a received date, accepted date or reported date.
-
+-
+  expr: '!is.na(dntn_value) & (dntn_value > 0)'
+  name: error4
+  label: Donation value should exist
+  description: |
+    The donation value should exist and be greater than 0.
+-
+  expr: '!is.na(dntn_donor_name) | dntn_donor_status == "Unidentifiable Donor"'
+  name: error5
+  label: Donor name should exist
+  description: |
+    The donor name should exist for every donation unless donor status is 'Unidentifiable donor'.
+-
+  expr: 'dntn_accounting_unit_as_central_party %in% c(TRUE, FALSE)'
+  name: error6
+  label: Accounting unit as central party should be True or False
+  description: |
+    The 'accounting unit as central party' field should be True or False.
+-
+  expr: 'dntn_is_sponsorship %in% c(TRUE, FALSE)'
+  name: error7
+  label: Sponsorship should be True or False
+  description: |
+    The 'is sponsorship?' field should be True or False.
+-
+  expr: '!is.na(dntn_donor_status)'
+  name: error8
+  label: Donor status should exist
+  description: |
+    The 'donor status' field should exist.
