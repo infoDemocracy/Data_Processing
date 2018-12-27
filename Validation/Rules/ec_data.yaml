@@ -1,42 +1,81 @@
 rules:
 - 
   expr: sum(duplicated(.$dntn_ec_ref)) == 0
-  name: error1
+  name: error01
   label: No duplicate reference numbers
   description: "There should be no duplicate reference numbers in the data."
 -
   expr: '!is.na(dntn_regulated_entity_name)'
-  name: error2
+  name: error02
   label: Entity name should not be missing
   description: "The regulated entity name should not be missing."
 -
   expr: '!(is.na(dntn_received_date) & is.na(dntn_accepted_date) & is.na(dntn_reported_date))'
-  name: error3
+  name: error03
   label: There should be a date
   description: "Every donation should have a received date, accepted date or reported date."
 -
   expr: '!is.na(dntn_value) & (dntn_value > 0)'
-  name: error4
+  name: error04
   label: Donation value should exist
   description: "The donation value should exist and be greater than 0."
 -
   expr: '!is.na(dntn_donor_name) | dntn_donor_status == "Unidentifiable Donor"'
-  name: error5
+  name: error05
   label: Donor name should exist
   description: "The donor name should exist for every donation unless donor status is 'Unidentifiable donor'."
 -
   expr: 'dntn_accounting_unit_as_central_party %in% c(TRUE, FALSE)'
-  name: error6
+  name: error06
   label: Accounting unit as central party should be True or False
   description: "The 'accounting unit as central party' field should be True or False."
 -
   expr: 'dntn_is_sponsorship %in% c(TRUE, FALSE)'
-  name: error7
+  name: error07
   label: Sponsorship should be True or False
   description: "The 'is sponsorship?' field should be True or False."
 -
   expr: '!is.na(dntn_donor_status)'
-  name: error8
+  name: error08
   label: Donor status should exist
   description: "The 'donor status' field should exist."
-  
+-
+  expr: '!is.na(dntn_company_registration_number) | (dntn_donor_status != "Company")'
+  name: error09
+  label: Company registration number should exist for companies
+  description: "The 'Company registration number' field should exist where 'Donor status' is 'Company'."
+-
+  expr: 'dntn_received_date <= Sys.Date()'
+  name: error10
+  label: Received date should not be in the future
+  description: "The donation received date should not be in the future."
+-
+  expr: 'dntn_accepted_date <= Sys.Date()'
+  name: error11
+  label: Accepted date should not be in the future
+  description: "The donation accepted date should not be in the future."
+-
+  expr: 'dntn_reported_date <= Sys.Date()'
+  name: error12
+  label: Reported date should not be in the future
+  description: "The donation reported date should not be in the future."
+-
+  expr: '!is.na(dntn_is_reported_pre_poll)'
+  name: error13
+  label: Is reported pre poll field should exist
+  description: "The 'is reported pre poll' field should exist."
+-
+  expr: '!is.na(dntn_reporting_period_name)'
+  name: error14
+  label: Reporting period name field should exist
+  description: "The 'Reporting period name' field should exist."
+-
+  expr: '!is.na(dntn_is_bequest)'
+  name: error15
+  label: Is bequest field should exist
+  description: "The 'Is bequest' field should exist."
+-
+  expr: '!is.na(dntn_is_aggregation)'
+  name: error16
+  label: Is aggregation field should exist
+  description: "The 'Is aggregation' field should exist."
