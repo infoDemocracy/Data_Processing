@@ -7,17 +7,79 @@ library(tidyr)
 library(stringr)
 library(lubridate)
 
-# Read data ---------------------------------------------------------------
 
-# Electoral Commission
-ec_data <- read_csv("Data/ec_data.csv")
+# ec_data -----------------------------------------------------------------
+ec_data <- read_csv("Data/ec_data_raw.txt",
+                    col_types = cols(
+                      ECRef = col_character(),
+                      RegulatedEntityName = col_character(),
+                      RegulatedEntityType = col_character(),
+                      Value = col_character(),
+                      AcceptedDate = col_date(format = '%d/%m/%Y'),
+                      AccountingUnitName = col_character(),
+                      DonorName = col_character(),
+                      AccountingUnitsAsCentralParty = col_logical(),
+                      IsSponsorship = col_logical(),
+                      DonorStatus = col_character(),
+                      RegulatedDoneeType = col_character(),
+                      CompanyRegistrationNumber = col_character(),
+                      Postcode = col_character(),
+                      DonationType = col_character(),
+                      NatureOfDonation = col_character(),
+                      PurposeOfVisit = col_character(),
+                      DonationAction = col_character(),
+                      ReceivedDate = col_date(format = '%d/%m/%Y'),
+                      ReportedDate = col_date(format = '%d/%m/%Y'),
+                      IsReportedPrePoll = col_logical(),
+                      ReportingPeriodName = col_character(),
+                      IsBequest = col_logical(),
+                      IsAggregation = col_logical(),
+                      RegulatedEntityId = col_double(),
+                      AccountingUnitId = col_double(),
+                      DonorId = col_double(),
+                      CampaigningName = col_character(),
+                      RegisterName = col_character(),
+                      IsIrishSource = col_logical()
+                    ),
+                    na = c("", "NA", "N/A")) %>% 
+  rename(dntn_ec_ref = ECRef,
+         dntn_regulated_entity_name = RegulatedEntityName,
+         dntn_regulated_entity_type = RegulatedEntityType,
+         dntn_value = Value,
+         dntn_accepted_date = AcceptedDate,
+         dntn_accounting_unit_name = AccountingUnitName,
+         dntn_donor_name = DonorName,
+         dntn_accounting_unit_as_central_party = AccountingUnitsAsCentralParty,
+         dntn_is_sponsorship = IsSponsorship,
+         dntn_donor_status = DonorStatus,
+         dntn_regulated_donee_type = RegulatedDoneeType,
+         dntn_company_registration_number = CompanyRegistrationNumber,
+         dntn_postcode = Postcode,
+         dntn_donation_type = DonationType,
+         dntn_nature_of_donation = NatureOfDonation,
+         dntn_purpose_of_visit = PurposeOfVisit,
+         dntn_donation_action = DonationAction,
+         dntn_received_date = ReceivedDate,
+         dntn_reported_date = ReportedDate,
+         dntn_is_reported_pre_poll = IsReportedPrePoll,
+         dntn_reporting_period_name = ReportingPeriodName,
+         dntn_is_bequest = IsBequest,
+         dntn_is_aggregation = IsAggregation,
+         dntn_regulated_entity_id = RegulatedEntityId,
+         dntn_accounting_unit_id = AccountingUnitId,
+         dntn_donor_id = DonorId,
+         dntn_campaigning_name = CampaigningName,
+         dntn_register_name = RegisterName,
+         dntn_is_irish_source = IsIrishSource) %>%
+  mutate(dntn_value = as.numeric(str_replace_all(dntn_value, '[\\£|,]', '')),
+         download_date = Sys.Date())
 
-# Donation-Donor Link
+# donation_donor_link -----------------------------------------------------
 donation_donor_link <- read_csv("Data/donation_donor_link.csv") %>%
   filter(!is.na(donor_id)) %>% 
   select(dntn_ec_ref, donor_id)
 
-# Donor information
+# donors ------------------------------------------------------------------
 donor_individual <- read_csv("Data/donor_individual.csv")
 donor_organisations <- read_csv("Data/donor_organisations.csv")
 
@@ -27,7 +89,7 @@ donors <- bind_rows(donor_individual, donor_organisations) %>%
                                      pattern = '^_',
                                      replacement = ''))
 
-# Interest codes
+# interest_codes ----------------------------------------------------------
 level_5 <- read_csv("Data/interest_code_level_5.csv")
 level_4 <- read_csv("Data/interest_code_level_4.csv")
 level_3 <- read_csv("Data/interest_code_level_3.csv")
@@ -42,7 +104,9 @@ interest_codes <- level_5 %>%
   left_join(level_1, 'level_1') %>% 
   bind_rows(additional_codes)
 
-# Join --------------------------------------------------------------------
+# info_democracy ----------------------------------------------------------
+
+# Join
 info_democracy <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
   left_join(donors, by = "donor_id") %>% 
   mutate(interest_code = case_when(
@@ -52,7 +116,7 @@ info_democracy <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>
   replace_na(list(interest_code = 'ZZZZZ')) %>% 
   left_join(interest_codes, by = c('interest_code' = 'level_5'))
 
-# Manual fixes ------------------------------------------------------------
+# Manual fixes
 info_democracy <- info_democracy %>% 
   mutate(
     dntn_accepted_date = case_when(
@@ -73,7 +137,7 @@ info_democracy <- info_democracy %>%
     TRUE ~ FALSE
   ))
 
-# Derived fields ----------------------------------------------------------
+# Derived fields
 info_democracy <- info_democracy %>% 
   mutate(x_researched = !is.na(donor_id),
          x_coded = interest_code != 'ZZZZZ',
@@ -90,18 +154,21 @@ info_democracy <- info_democracy %>%
 
 # Save --------------------------------------------------------------------
 
-# Donations
-write_csv(info_democracy, 'Output/csv/info_democracy.csv')
-save(info_democracy, file = 'Output/Rdata/info_democracy.Rdata')
+# ec_data
+save(ec_data, file = 'Output/Rdata/ec_data.Rdata')
 
-# Donors
+# donation_donor_link
+save(donation_donor_link, file = 'Output/Rdata/donation_donor_link.Rdata')
+
+# donors
 save(donors, file = 'Output/Rdata/donors.Rdata')
 
-# Interest codes
+# interest_codes
 save(interest_codes, file = 'Output/Rdata/interest_codes.Rdata')
 
-# Donation-Donor link
-save(donation_donor_link, file = 'Output/Rdata/donation_donor_link.Rdata')
+# info_democracy
+write_csv(info_democracy, 'Output/csv/info_democracy.csv')
+save(info_democracy, file = 'Output/Rdata/info_democracy.Rdata')
 
 # Tidy --------------------------------------------------------------------
 rm(ec_data,
