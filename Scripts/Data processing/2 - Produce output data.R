@@ -116,19 +116,6 @@ info_democracy <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>
   replace_na(list(interest_code = 'ZZZZZ')) %>% 
   left_join(interest_codes, by = c('interest_code' = 'level_5'))
 
-# Manual fixes
-info_democracy <- info_democracy %>% 
-  mutate(
-    dntn_accepted_date = case_when(
-    dntn_ec_ref == 'C0314887' ~ as_date('2016-06-17'),
-    TRUE ~ dntn_accepted_date
-    ),
-    dntn_received_date = case_when(
-      dntn_ec_ref == 'C0314887' ~ as_date('2016-06-17'),
-      TRUE ~ dntn_received_date
-    )
-  )
-
 # Fix pre-poll
 info_democracy <- info_democracy %>% 
   mutate(dntn_is_reported_pre_poll = case_when(
