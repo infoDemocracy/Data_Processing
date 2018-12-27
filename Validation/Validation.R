@@ -5,7 +5,7 @@ library(readr)
 library(validate)
 
 # Data --------------------------------------------------------------------
-ec_data <- read_csv("Data/ec_data.csv")
+load("Output/Rdata/ec_data.Rdata")
 load('Output/Rdata/info_democracy.Rdata')
 
 # Rules -------------------------------------------------------------------
