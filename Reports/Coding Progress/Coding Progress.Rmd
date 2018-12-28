@@ -28,7 +28,7 @@ This table summaries the progress made in researching individuals and organisati
 ## 1.1 Researched
 
 ```{r}
-table <- donations %>% 
+table <- info_democracy %>% 
   summarise(`Total number` = n()  %>% format(big.mark = ","),
             `Total value` = sum(dntn_value) %>% format(big.mark = ","),
             `Researched number` = sum(x_researched) %>% format(big.mark = ","),
@@ -43,7 +43,7 @@ rm(table)
 ## 1.2 Coded
 
 ```{r}
-table <- donations %>% 
+table <- info_democracy %>% 
   summarise(`Total number` = n()  %>% format(big.mark = ","),
             `Total value` = sum(dntn_value) %>% format(big.mark = ","),
             `Coded number` = sum(x_coded) %>% format(big.mark = ","),
@@ -60,7 +60,7 @@ rm(table)
 The chart below shows the total value of donations per year, anlong with the proportion of that value that has been coded.
 
 ```{r warning=FALSE}
-donations %>% 
+info_democracy %>% 
   group_by(x_donation_year, Coded = x_coded) %>% 
   summarise(total = sum(dntn_value)) %>% 
   ggplot(aes(x_donation_year, total, fill = Coded)) + 
@@ -76,7 +76,7 @@ donations %>%
 This table looks at the uncoded donations by recipient. Only the top 6 biggest recipients are shown.
 
 ```{r}
-donations %>% 
+info_democracy %>% 
   filter(interest_code == 'ZZZZZ') %>% 
   group_by(Recipient = dntn_regulated_entity_name) %>% 
   summarise(n = n(),
@@ -93,7 +93,7 @@ donations %>%
 For recipients who have received over £10 million, this table gives the percentage of donations that have been coded.
 
 ```{r}
-donations %>% 
+info_democracy %>% 
   group_by(Recipient = dntn_regulated_entity_name) %>% 
   summarise(Donations = n(),
             Value = sum(dntn_value),
@@ -115,12 +115,12 @@ donations %>%
 
 ```{r}
 
-donations %>% 
+info_democracy %>% 
   filter(level_1_description != 'Not yet coded') %>% 
   group_by(level_1_short) %>% 
   summarise(Total = sum(dntn_value)) %>% 
   ggplot(aes(level_1_short, Total)) +
-  geom_bar(stat = 'identity') +
+  geom_bar(stat = 'identity', fill = 'navyblue') +
   coord_flip()
 
 ```
