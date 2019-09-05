@@ -20,7 +20,40 @@ ec_data <- GET('http://search.electoralcommission.org.uk/api/csv/Donations',
                             prePoll = "true",
                             postPoll = "true"))
 
-ec_data_raw <- content(ec_data, "text") 
+ec_data_raw <- content(ec_data,
+                       type = "text/csv",
+                       encoding = 'UTF-8',
+                       col_types = cols(
+                         ECRef = col_character(),
+                         RegulatedEntityName = col_character(),
+                         RegulatedEntityType = col_character(),
+                         Value = col_character(),
+                         AcceptedDate = col_character(),
+                         AccountingUnitName = col_character(),
+                         DonorName = col_character(),
+                         AccountingUnitsAsCentralParty = col_logical(),
+                         IsSponsorship = col_logical(),
+                         DonorStatus = col_character(),
+                         RegulatedDoneeType = col_character(),
+                         CompanyRegistrationNumber = col_character(),
+                         Postcode = col_character(),
+                         DonationType = col_character(),
+                         NatureOfDonation = col_character(),
+                         PurposeOfVisit = col_character(),
+                         DonationAction = col_character(),
+                         ReceivedDate = col_character(),
+                         ReportedDate = col_character(),
+                         IsReportedPrePoll = col_logical(),
+                         ReportingPeriodName = col_character(),
+                         IsBequest = col_logical(),
+                         IsAggregation = col_logical(),
+                         RegulatedEntityId = col_double(),
+                         AccountingUnitId = col_double(),
+                         DonorId = col_double(),
+                         CampaigningName = col_character(),
+                         RegisterName = col_character(),
+                         IsIrishSource = col_logical()
+                       )) 
 
 writeLines(ec_data_raw, 'Data/ec_data_raw.txt')
 
