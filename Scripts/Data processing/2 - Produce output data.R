@@ -75,13 +75,57 @@ ec_data <- read_csv("Data/ec_data_raw.txt",
          download_date = Sys.Date())
 
 # donation_donor_link -----------------------------------------------------
-donation_donor_link <- read_csv("Data/donation_donor_link.csv") %>%
+donation_donor_link <- 
+  read_csv("Data/donation_donor_link.csv",
+           col_types = cols(
+             dntn_ec_ref = col_character(),
+             donor_id = col_character(),
+             helper_dntn_donor_name = col_character(),
+             helper_dntn_company_registration_number = col_character(),
+             helper_dntn_regulated_entity_name = col_character(),
+             helper_dntn_value = col_double()
+           )) %>%
   filter(!is.na(donor_id)) %>% 
   select(dntn_ec_ref, donor_id)
 
 # donors ------------------------------------------------------------------
-donor_individual <- read_csv("Data/donor_individual.csv")
-donor_organisations <- read_csv("Data/donor_organisations.csv")
+donor_individual <- read_csv("Data/donor_individual.csv",
+                             col_types = cols(
+                               donor_id = col_character(),
+                               title = col_character(),
+                               first_name = col_character(),
+                               middle_names = col_character(),
+                               last_name = col_character(),
+                               suffix = col_character(),
+                               previous_last_name = col_character(),
+                               designation = col_character(),
+                               alias = col_character(),
+                               gender = col_character(),
+                               birth_year = col_double(),
+                               birth_month = col_double(),
+                               birth_day = col_double(),
+                               death_year = col_double(),
+                               death_month = col_double(),
+                               death_day = col_double(),
+                               interest_code = col_character(),
+                               company = col_character(),
+                               powerbase = col_character(),
+                               wikipedia = col_character(),
+                               notes = col_character()
+                             ))
+
+donor_organisations <- read_csv("Data/donor_organisations.csv",
+                                col_types = cols(
+                                  donor_id = col_character(),
+                                  orga_name = col_character(),
+                                  interest_code = col_character(),
+                                  powerbase = col_character(),
+                                  wikipedia = col_character(),
+                                  orga_website = col_character(),
+                                  notes = col_character(),
+                                  companies_house = col_character(),
+                                  orga_registry_number = col_character()
+                                ))
 
 donors <- bind_rows(donor_individual, donor_organisations) %>% 
   filter(!is.na(donor_id)) %>% 
@@ -90,12 +134,55 @@ donors <- bind_rows(donor_individual, donor_organisations) %>%
                                      replacement = ''))
 
 # interest_codes ----------------------------------------------------------
-level_5 <- read_csv("Data/interest_code_level_5.csv")
-level_4 <- read_csv("Data/interest_code_level_4.csv")
-level_3 <- read_csv("Data/interest_code_level_3.csv")
-level_2 <- read_csv("Data/interest_code_level_2.csv")
-level_1 <- read_csv("Data/interest_code_level_1.csv")
-additional_codes <- read_csv('Data/interest_code_additional_codes.csv')
+level_5 <- read_csv("Data/interest_code_level_5.csv",
+                    col_types = cols(
+                      level_5 = col_character(),
+                      level_5_description = col_character(),
+                      level_4 = col_character()
+                    ))
+
+level_4 <- read_csv("Data/interest_code_level_4.csv",
+                    col_types = cols(
+                      level_4 = col_character(),
+                      level_4_description = col_character(),
+                      level_3 = col_character()
+                    ))
+
+level_3 <- read_csv("Data/interest_code_level_3.csv",
+                    col_types = cols(
+                      level_3 = col_character(),
+                      level_3_description = col_character(),
+                      level_2 = col_character()
+                    ))
+
+level_2 <- read_csv("Data/interest_code_level_2.csv",
+                    col_types = cols(
+                      level_2 = col_character(),
+                      level_2_description = col_character(),
+                      level_1 = col_character()
+                    ))
+
+level_1 <- read_csv("Data/interest_code_level_1.csv",
+                    col_types = cols(
+                      level_1 = col_character(),
+                      level_1_description = col_character(),
+                      level_1_short = col_character()
+                    ))
+
+additional_codes <- read_csv('Data/interest_code_additional_codes.csv',
+                             col_types = cols(
+                               level_5 = col_character(),
+                               level_5_description = col_character(),
+                               level_4 = col_character(),
+                               level_4_description = col_character(),
+                               level_3 = col_character(),
+                               level_3_description = col_character(),
+                               level_2 = col_character(),
+                               level_2_description = col_character(),
+                               level_1 = col_character(),
+                               level_1_description = col_character(),
+                               level_1_short = col_character()
+                             ))
 
 interest_codes <- level_5 %>% 
   left_join(level_4, 'level_4') %>% 
