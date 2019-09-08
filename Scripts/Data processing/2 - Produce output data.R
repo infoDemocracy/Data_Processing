@@ -9,7 +9,7 @@ library(lubridate)
 
 
 # ec_data -----------------------------------------------------------------
-ec_data <- read_csv("Data/ec_data_raw.txt",
+ec_data <- read_csv("Data/ec_data_raw.csv",
                     col_types = cols(
                       ECRef = col_character(),
                       RegulatedEntityName = col_character(),
