@@ -55,16 +55,23 @@ ec_data_raw <- content(ec_data,
                          IsIrishSource = col_logical()
                        )) 
 
-writeLines(ec_data_raw, 'Data/ec_data_raw.txt')
+write_csv(ec_data_raw, 'Data/ec_data_raw.csv')
 
 # Update donation-donor link ----------------------------------------------
 
 # Read current file
-donation_donor_link <- read_csv("Data/donation_donor_link.csv")
+donation_donor_link <- read_csv("Data/donation_donor_link.csv",
+                                col_types = cols(
+                                  dntn_ec_ref = col_character(),
+                                  donor_id = col_character(),
+                                  helper_dntn_donor_name = col_character(),
+                                  helper_dntn_company_registration_number = col_character(),
+                                  helper_dntn_regulated_entity_name = col_character(),
+                                  helper_dntn_value = col_double()
+                                ))
 
 # Get most recent data
-new_donations <- ec_data %>% 
-  content("parsed") %>% 
+new_donations <- ec_data_raw %>% 
   select(dntn_ec_ref = ECRef,
          helper_dntn_donor_name = DonorName,
          helper_dntn_company_registration_number = CompanyRegistrationNumber,
