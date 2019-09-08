@@ -53,7 +53,8 @@ ec_data_raw <- content(ec_data,
                          CampaigningName = col_character(),
                          RegisterName = col_character(),
                          IsIrishSource = col_logical()
-                       )) 
+                       )) %>% 
+  mutate(download_date = today())
 
 write_csv(ec_data_raw, 'Data/ec_data_raw.csv')
 

@@ -39,7 +39,8 @@ ec_data <- read_csv("Data/ec_data_raw.csv",
                       DonorId = col_double(),
                       CampaigningName = col_character(),
                       RegisterName = col_character(),
-                      IsIrishSource = col_logical()
+                      IsIrishSource = col_logical(),
+                      download_date = col_date()
                     ),
                     na = c("", "NA", "N/A")) %>% 
   rename(dntn_ec_ref = ECRef,
@@ -71,8 +72,7 @@ ec_data <- read_csv("Data/ec_data_raw.csv",
          dntn_campaigning_name = CampaigningName,
          dntn_register_name = RegisterName,
          dntn_is_irish_source = IsIrishSource) %>%
-  mutate(dntn_value = as.numeric(str_replace_all(dntn_value, '[\\£|,]', '')),
-         download_date = Sys.Date())
+  mutate(dntn_value = as.numeric(str_replace_all(dntn_value, '[\\£|,]', '')))
 
 # donation_donor_link -----------------------------------------------------
 donation_donor_link <- 
