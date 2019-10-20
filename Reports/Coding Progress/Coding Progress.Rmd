@@ -15,7 +15,7 @@ library(leebunce)
 library(lubridate)
 library(ggplot2)
 
-load("../../Output/Rdata/info_democracy.Rdata")
+load("../../Output/info_democracy.Rdata")
 
 ```
 

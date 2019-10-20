@@ -5,10 +5,10 @@ library(tidyverse)
 library(leebunce)
 
 # Update data file --------------------------------------------------------
-source('Scripts/Data processing/2 - Produce output data.R')
+source('Scripts/Data processing/3 - Produce output data.R')
 
 # Data --------------------------------------------------------------------
-load("Output/Rdata/info_democracy.Rdata")
+load("Output/info_democracy.Rdata")
 
 # Not yet researched ------------------------------------------------------
 not_yet_researched <- info_democracy %>% 
