@@ -7,74 +7,78 @@ library(tidyr)
 library(stringr)
 library(lubridate)
 
+# Donations ---------------------------------------------------------------
+ec_donations <- read_csv("Data/ec_donations_raw.csv",
+                         col_types = cols(
+                           dntn_ec_ref = col_character(),
+                           dntn_regulated_entity_name = col_character(),
+                           dntn_regulated_entity_type = col_character(),
+                           dntn_value = col_double(),
+                           dntn_accepted_date = col_date(format = ""),
+                           dntn_accounting_unit_name = col_character(),
+                           dntn_donor_name = col_character(),
+                           dntn_accounting_unit_as_central_party = col_logical(),
+                           dntn_is_sponsorship = col_logical(),
+                           dntn_donor_status = col_character(),
+                           dntn_regulated_donee_type = col_character(),
+                           dntn_company_registration_number = col_character(),
+                           dntn_postcode = col_character(),
+                           dntn_donation_type = col_character(),
+                           dntn_nature_of_donation = col_character(),
+                           dntn_purpose_of_visit = col_character(),
+                           dntn_donation_action = col_character(),
+                           dntn_received_date = col_date(format = ""),
+                           dntn_reported_date = col_date(format = ""),
+                           dntn_is_reported_pre_poll = col_logical(),
+                           dntn_reporting_period_name = col_character(),
+                           dntn_is_bequest = col_logical(),
+                           dntn_is_aggregation = col_logical(),
+                           dntn_regulated_entity_id = col_double(),
+                           dntn_accounting_unit_id = col_double(),
+                           dntn_donor_id = col_double(),
+                           dntn_campaigning_name = col_character(),
+                           dntn_register_name = col_character(),
+                           dntn_is_irish_source = col_logical(),
+                           download_date = col_date(format = ""),
+                           type = col_character()
+                         ))
 
-# ec_data -----------------------------------------------------------------
-ec_data <- read_csv("Data/ec_data_raw.csv",
-                    col_types = cols(
-                      ECRef = col_character(),
-                      RegulatedEntityName = col_character(),
-                      RegulatedEntityType = col_character(),
-                      Value = col_character(),
-                      AcceptedDate = col_date(format = '%d/%m/%Y'),
-                      AccountingUnitName = col_character(),
-                      DonorName = col_character(),
-                      AccountingUnitsAsCentralParty = col_logical(),
-                      IsSponsorship = col_logical(),
-                      DonorStatus = col_character(),
-                      RegulatedDoneeType = col_character(),
-                      CompanyRegistrationNumber = col_character(),
-                      Postcode = col_character(),
-                      DonationType = col_character(),
-                      NatureOfDonation = col_character(),
-                      PurposeOfVisit = col_character(),
-                      DonationAction = col_character(),
-                      ReceivedDate = col_date(format = '%d/%m/%Y'),
-                      ReportedDate = col_date(format = '%d/%m/%Y'),
-                      IsReportedPrePoll = col_logical(),
-                      ReportingPeriodName = col_character(),
-                      IsBequest = col_logical(),
-                      IsAggregation = col_logical(),
-                      RegulatedEntityId = col_double(),
-                      AccountingUnitId = col_double(),
-                      DonorId = col_double(),
-                      CampaigningName = col_character(),
-                      RegisterName = col_character(),
-                      IsIrishSource = col_logical(),
-                      download_date = col_date()
-                    ),
-                    na = c("", "NA", "N/A")) %>% 
-  rename(dntn_ec_ref = ECRef,
-         dntn_regulated_entity_name = RegulatedEntityName,
-         dntn_regulated_entity_type = RegulatedEntityType,
-         dntn_value = Value,
-         dntn_accepted_date = AcceptedDate,
-         dntn_accounting_unit_name = AccountingUnitName,
-         dntn_donor_name = DonorName,
-         dntn_accounting_unit_as_central_party = AccountingUnitsAsCentralParty,
-         dntn_is_sponsorship = IsSponsorship,
-         dntn_donor_status = DonorStatus,
-         dntn_regulated_donee_type = RegulatedDoneeType,
-         dntn_company_registration_number = CompanyRegistrationNumber,
-         dntn_postcode = Postcode,
-         dntn_donation_type = DonationType,
-         dntn_nature_of_donation = NatureOfDonation,
-         dntn_purpose_of_visit = PurposeOfVisit,
-         dntn_donation_action = DonationAction,
-         dntn_received_date = ReceivedDate,
-         dntn_reported_date = ReportedDate,
-         dntn_is_reported_pre_poll = IsReportedPrePoll,
-         dntn_reporting_period_name = ReportingPeriodName,
-         dntn_is_bequest = IsBequest,
-         dntn_is_aggregation = IsAggregation,
-         dntn_regulated_entity_id = RegulatedEntityId,
-         dntn_accounting_unit_id = AccountingUnitId,
-         dntn_donor_id = DonorId,
-         dntn_campaigning_name = CampaigningName,
-         dntn_register_name = RegisterName,
-         dntn_is_irish_source = IsIrishSource) %>%
-  mutate(dntn_value = as.numeric(str_replace_all(dntn_value, '[\\£|,]', '')))
+# Loans -------------------------------------------------------------------
+ec_loans <- read_csv('Data/ec_loans_raw.csv',
+                     col_types = cols(
+                       dntn_ec_ref = col_character(),
+                       dntn_regulated_entity_name = col_character(),
+                       dntn_regulated_entity_type = col_character(),
+                       dntn_value = col_double(),
+                       dntn_loan_status = col_character(),
+                       dntn_start_date = col_date(format = ""),
+                       dntn_accounting_unit_name = col_character(),
+                       dntn_loan_participnt_name = col_character(),
+                       dntn_loan_participnt_type = col_character(),
+                       dntn_company_registration_number = col_character(),
+                       dntn_postcode = col_character(),
+                       dntn_loan_type = col_character(),
+                       dntn_rate_of_interest_description = col_character(),
+                       dntn_amount_repaid = col_double(),
+                       dntn_amount_converted = col_double(),
+                       dntn_amount_outstanding = col_double(),
+                       dntn_end_date = col_date(format = ""),
+                       dntn_date_repaid = col_date(format = ""),
+                       dntn_date_ec_last_notified = col_character(),
+                       dntn_is_reported_pre_poll = col_logical(),
+                       dntn_reporting_period_name = col_character(),
+                       dntn_is_aggregation = col_logical(),
+                       dntn_regulated_entity_id = col_double(),
+                       dntn_accounting_unit_id = col_double(),
+                       dntn_loan_participant_id = col_double(),
+                       dntn_campaigning_name = col_logical(),
+                       dntn_register_name = col_character(),
+                       dntn_is_irish_source = col_logical(),
+                       download_date = col_date(format = ""),
+                       type = col_character()
+                     ))
 
-# donation_donor_link -----------------------------------------------------
+# Donation Donor Link -----------------------------------------------------
 donation_donor_link <- 
   read_csv("Data/donation_donor_link.csv",
            col_types = cols(
@@ -88,7 +92,7 @@ donation_donor_link <-
   filter(!is.na(donor_id)) %>% 
   select(dntn_ec_ref, donor_id)
 
-# donors ------------------------------------------------------------------
+# Donors ------------------------------------------------------------------
 donor_individual <- read_csv("Data/donor_individual.csv",
                              col_types = cols(
                                donor_id = col_character(),
@@ -133,7 +137,7 @@ donors <- bind_rows(donor_individual, donor_organisations) %>%
                                      pattern = '^_',
                                      replacement = ''))
 
-# interest_codes ----------------------------------------------------------
+# Interest Codes ----------------------------------------------------------
 level_5 <- read_csv("Data/interest_code_level_5.csv",
                     col_types = cols(
                       level_5 = col_character(),
@@ -191,7 +195,7 @@ interest_codes <- level_5 %>%
   left_join(level_1, 'level_1') %>% 
   bind_rows(additional_codes)
 
-# info_democracy ----------------------------------------------------------
+# Info_democracy ----------------------------------------------------------
 
 # Join
 info_democracy <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
