@@ -198,7 +198,7 @@ interest_codes <- level_5 %>%
 # Info_democracy ----------------------------------------------------------
 
 # Join
-info_democracy <- left_join(ec_data, donation_donor_link, by = "dntn_ec_ref") %>% 
+info_democracy <- left_join(ec_donations, donation_donor_link, by = "dntn_ec_ref") %>% 
   left_join(donors, by = "donor_id") %>% 
   mutate(interest_code = case_when(
     is.na(dntn_donor_name) ~ 'XXXXX',
@@ -231,25 +231,12 @@ info_democracy <- info_democracy %>%
          )
 
 # Save --------------------------------------------------------------------
-
-# ec_data
-save(ec_data, file = 'Output/Rdata/ec_data.Rdata')
-
-# donation_donor_link
-save(donation_donor_link, file = 'Output/Rdata/donation_donor_link.Rdata')
-
-# donors
-save(donors, file = 'Output/Rdata/donors.Rdata')
-
-# interest_codes
-save(interest_codes, file = 'Output/Rdata/interest_codes.Rdata')
-
-# info_democracy
-write_csv(info_democracy, 'Output/csv/info_democracy.csv')
-save(info_democracy, file = 'Output/Rdata/info_democracy.Rdata')
+write_csv(info_democracy, 'Output/info_democracy.csv')
+save(info_democracy, file = 'Output/info_democracy.Rdata')
 
 # Tidy --------------------------------------------------------------------
-rm(ec_data,
+rm(ec_donations,
+   ec_loans,
    donation_donor_link,
    donor_individual,
    donor_organisations,
