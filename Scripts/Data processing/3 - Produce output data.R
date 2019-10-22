@@ -76,7 +76,20 @@ ec_loans <- read_csv('Data/ec_loans_raw.csv',
                        dntn_is_irish_source = col_logical(),
                        download_date = col_date(format = ""),
                        type = col_character()
-                     ))
+                     )) %>% 
+  rename(dntn_received_date = dntn_start_date,
+         dntn_donor_name = dntn_loan_participnt_name,
+         dntn_donor_status = dntn_loan_participnt_type,
+         dntn_donor_id = dntn_loan_participant_id) %>% 
+  select(-dntn_loan_status,
+         -dntn_loan_type,
+         -dntn_rate_of_interest_description,
+         -dntn_amount_repaid,
+         -dntn_amount_converted,
+         -dntn_amount_outstanding,
+         -dntn_end_date,
+         -dntn_date_repaid,
+         -dntn_date_ec_last_notified)
 
 # Donation Donor Link -----------------------------------------------------
 donation_donor_link <- 
@@ -197,8 +210,12 @@ interest_codes <- level_5 %>%
 
 # Info_democracy ----------------------------------------------------------
 
-# Join
-info_democracy <- left_join(ec_donations, donation_donor_link, by = "dntn_ec_ref") %>% 
+# Bind donations and loans
+
+info_democracy <- bind_rows(ec_donations, ec_loans)
+
+# Join to donors
+info_democracy <- left_join(info_democracy, donation_donor_link, by = "dntn_ec_ref") %>% 
   left_join(donors, by = "donor_id") %>% 
   mutate(interest_code = case_when(
     is.na(dntn_donor_name) ~ 'XXXXX',
