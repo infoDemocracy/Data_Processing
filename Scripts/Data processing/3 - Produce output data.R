@@ -211,7 +211,6 @@ interest_codes <- level_5 %>%
 # Info_democracy ----------------------------------------------------------
 
 # Bind donations and loans
-
 info_democracy <- bind_rows(ec_donations, ec_loans)
 
 # Join to donors
