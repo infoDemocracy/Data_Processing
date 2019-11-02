@@ -61,6 +61,7 @@ The chart below shows the total value of donations per year, anlong with the pro
 
 ```{r warning=FALSE}
 info_democracy %>% 
+  filter(x_donation_year >= 2001) %>% 
   group_by(x_donation_year, Coded = x_coded) %>% 
   summarise(total = sum(dntn_value)) %>% 
   ggplot(aes(x_donation_year, total, fill = Coded)) + 
