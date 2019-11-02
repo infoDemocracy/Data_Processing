@@ -225,7 +225,7 @@ info_democracy <- left_join(info_democracy, donation_donor_link, by = "dntn_ec_r
 
 # Fix pre-poll
 info_democracy <- info_democracy %>% 
-  mutate(dntn_is_reported_pre_poll = case_when(
+  mutate(x_is_reported_pre_poll = case_when(
     dntn_is_reported_pre_poll == 'True' ~ TRUE,
     str_detect(dntn_reporting_period_name, '[Pp]re-[Pp]oll') ~ TRUE,
     TRUE ~ FALSE
