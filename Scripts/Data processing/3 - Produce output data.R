@@ -243,7 +243,9 @@ info_democracy <- info_democracy %>%
            !is.na(dntn_accepted_date) ~ dntn_accepted_date,
            !is.na(dntn_reported_date) ~ dntn_reported_date
            ),
-         x_donation_year = year(x_donation_date)
+         x_donation_year = year(x_donation_date),
+         x_donation_month = month(x_donation_date),
+         x_donation_quarter = quarter(x_donation_date)
          )
 
 # Save --------------------------------------------------------------------
