@@ -4,6 +4,7 @@
 library(readr)
 library(dplyr)
 library(tidyr)
+library(purrr)
 library(stringr)
 library(lubridate)
 library(digest)
@@ -253,6 +254,7 @@ info_democracy <- info_democracy %>%
 info_democracy <- info_democracy %>% 
   mutate(x_donation_id = map_chr(paste(dntn_donor_name,
                                        dntn_regulated_entity_name,
+                                       dntn_accounting_unit_name,
                                        dntn_value,
                                        x_donation_date,
                                        sep = '_'),
