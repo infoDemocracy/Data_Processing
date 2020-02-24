@@ -54,9 +54,7 @@ ec_donations_raw <- GET('http://search.electoralcommission.org.uk/api/csv/Donati
           ),
           na = c("", "NA", "N/A"))
 
-if(nrow(problems(ec_donations_raw)) > 0){
-  print(paste("There are", nrow(problems(ec_donations_raw)), "problems with the donations data."))
-}
+stop_for_problems(ec_donations_raw)
 
 # Process -----------------------------------------------------------------
 ec_donations_raw <- 

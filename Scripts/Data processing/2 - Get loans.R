@@ -46,9 +46,7 @@ ec_loans_raw <- GET('http://search.electoralcommission.org.uk/api/csv/loans',
             IsIrishSource = col_logical()
           ))
 
-if(nrow(problems(ec_loans_raw)) > 0){
-  print(paste("There are", nrow(problems(ec_loans_raw)), "problems with the loans data."))
-}
+stop_for_problems(ec_loans_raw)
 
 # Process -----------------------------------------------------------------
 ec_loans_raw <- ec_loans_raw %>% 
