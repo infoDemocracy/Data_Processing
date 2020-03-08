@@ -5,11 +5,9 @@ library(readr)
 library(validate)
 
 # Data --------------------------------------------------------------------
-load("Output/Rdata/ec_data.Rdata")
-load('Output/Rdata/info_democracy.Rdata')
+load('Output/info_democracy.Rdata')
 
 # Rules -------------------------------------------------------------------
-validator_ec_data <- validator(.file = 'Validation/Rules/ec_data.yaml')
 validator_info_democracy <- validator(.file = 'Validation/Rules/info_democracy.yaml')
 
 # Error function ----------------------------------------------------------
@@ -24,13 +22,10 @@ get_errors <- function(df, rules, key){
 }
 
 # Validate ----------------------------------------------------------------
-errors_ec_data <- get_errors(ec_data, validator_ec_data, key = "dntn_ec_ref")
 errors_info_democracy <- get_errors(info_democracy, validator_info_democracy, key = "dntn_ec_ref")
 
 # Print errors ------------------------------------------------------------
 file.remove(list.files('Validation/Errors', full.names = T))
-if(nrow(errors_ec_data) > 0) write_csv(errors_ec_data, 'Validation/Errors/errors_ec_data.csv')
 if(nrow(errors_info_democracy) > 0) write_csv(errors_info_democracy, 'Validation/Errors/errors_info_democracy.csv')
 
-print(paste('There are', nrow(errors_ec_data), 'errors in the ec_data file.'))
 print(paste('There are', nrow(errors_info_democracy), 'errors in the info_democracy file.'))
