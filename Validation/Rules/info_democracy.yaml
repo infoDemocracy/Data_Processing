@@ -82,35 +82,40 @@ rules:
 -
   expr: '(group_by(., dntn_reporting_period_name) %>% summarise(check = all(c(T,F) %in% dntn_is_reported_pre_poll)) %>% pull(check) %>% unique()) == F'
   name: error17
-  label: Reporting period indicates if pre-poll
-  description: "The 'reporting period' field should indicate if donations were recorded pre-poll."
+  label: Reporting period indicates if pre-poll, not both T and F
+  description: "Pre-poll shouldn't be recorded as both T and F for same period name."
+-
+  expr: '(group_by(., dntn_reporting_period_name) %>% summarise(check = any(c(T,F) %in% dntn_is_reported_pre_poll)) %>% pull(check) %>% unique()) == T'
+  name: error18
+  label: Reporting period indicates if pre-poll, should be T or F
+  description: "Pre-poll should be recorded as T or F for every period name"
 -
   expr: ((dntn_donor_status == 'Trade Union' & level_1 == 'T1') | (dntn_donor_status != 'Trade Union'))
-  name: error18
+  name: error19
   label: If Trade Union coded as T1
   description: "If dntn_donor_status is 'Trade Union' then coded as T1."
 -
   expr: ((dntn_donor_status == 'Trade Union' & level_1 == 'T1') | (level_1 != 'T1'))
-  name: error19
+  name: error20
   label: If coded as T1 then Trade Union
   description: "If coded as 'T1' then dntn_donor_status is 'Trade Union'."
 -
   expr: ((dntn_donor_status == 'Public Fund' & level_1 == 'P1') | (dntn_donor_status != 'Public Fund'))
-  name: error20
+  name: error21
   label: If public Fund coded as P1
   description: "If dntn_donor_status is 'Public Fund' then coded as P1."
 -
   expr: ((dntn_donor_status == 'Public Fund' & level_1 == 'P1') | (level_1 != 'P1'))
-  name: error21
+  name: error22
   label: If coded as P1 then Public Fund
   description: "If coded as 'P1' then dntn_donor_status is 'Public Fund'."
 -
   expr: level_1 != '70100'
-  name: error22
+  name: error23
   label: SOC Code '70100' is not used
   description: "The SOC code '70100' should not be used."
 -
   expr: '!is.na(level_5_description)'
-  name: error23
+  name: error24
   label: Record has valid interest code
   description: "Every record has a valid interest code."
