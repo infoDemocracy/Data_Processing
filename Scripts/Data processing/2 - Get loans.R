@@ -139,7 +139,6 @@ reporting_periods_new <- bind_rows(reporting_periods, new_reporting_periods) %>%
   ungroup() %>% 
   arrange(dntn_reporting_period_name)
 
-
 # Save --------------------------------------------------------------------
 write_csv(ec_loans_raw, 'Data/ec_loans_raw.csv')
 
@@ -155,4 +154,7 @@ write_csv(reporting_periods_new,
 rm(ec_loans_raw,
    donation_donor_link,
    new_loans,
-   donation_donor_link_new)
+   donation_donor_link_new,
+   reporting_periods,
+   new_reporting_periods,
+   reporting_periods_new)

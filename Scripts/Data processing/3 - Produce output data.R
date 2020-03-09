@@ -280,4 +280,5 @@ rm(ec_donations,
    level_5,
    additional_codes,
    interest_codes,
+   reporting_periods,
    info_democracy)
