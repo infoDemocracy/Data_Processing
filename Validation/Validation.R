@@ -1,7 +1,7 @@
 # Validate data
 
 # Packages ----------------------------------------------------------------
-library(readr)
+library(tidyverse)
 library(validate)
 
 # Data --------------------------------------------------------------------
@@ -19,3 +19,8 @@ errors_info_democracy <- confront(info_democracy, validator_info_democracy, key 
   rename(error = name)
 
 print(paste('There are', nrow(errors_info_democracy), 'errors in the info_democracy file.'))
+
+count(errors_info_democracy, error, description)
+
+# Tidy --------------------------------------------------------------------
+rm(validator_info_democracy)
