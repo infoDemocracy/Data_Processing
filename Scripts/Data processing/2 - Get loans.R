@@ -117,11 +117,38 @@ donation_donor_link_new <- bind_rows(donation_donor_link, new_loans) %>%
   arrange(helper_dntn_donor_name,
           helper_dntn_company_registration_number)
 
+# Update reporting periods ------------------------------------------------
+
+# Read current file
+reporting_periods <- read_csv("Data/reporting_periods.csv",
+                              col_types = cols(
+                                dntn_reporting_period_name = col_character(),
+                                x_is_reported_pre_poll = col_logical()
+                              ))
+
+# Get most recent data
+new_reporting_periods <- ec_loans_raw %>% 
+  select(dntn_reporting_period_name) %>% 
+  distinct()
+
+# Append the new data to the old and remove duplicates
+reporting_periods_new <- bind_rows(reporting_periods, new_reporting_periods) %>%
+  group_by(dntn_reporting_period_name) %>% 
+  arrange(x_is_reported_pre_poll) %>% 
+  slice(1) %>% 
+  ungroup() %>% 
+  arrange(dntn_reporting_period_name)
+
+
 # Save --------------------------------------------------------------------
 write_csv(ec_loans_raw, 'Data/ec_loans_raw.csv')
 
 write_csv(donation_donor_link_new,
           path = "Data/donation_donor_link.csv",
+          na = '')
+
+write_csv(reporting_periods_new,
+          "Data/reporting_periods.csv",
           na = '')
 
 # Tidy --------------------------------------------------------------------

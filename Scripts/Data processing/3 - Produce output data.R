@@ -225,14 +225,6 @@ info_democracy <- left_join(info_democracy, donation_donor_link, by = "dntn_ec_r
   replace_na(list(interest_code = 'ZZZZZ')) %>% 
   left_join(interest_codes, by = c('interest_code' = 'level_5'))
 
-# Fix pre-poll
-info_democracy <- info_democracy %>% 
-  mutate(x_is_reported_pre_poll = case_when(
-    dntn_is_reported_pre_poll == 'True' ~ TRUE,
-    str_detect(dntn_reporting_period_name, '[Pp]re-[Pp]oll') ~ TRUE,
-    TRUE ~ FALSE
-  ))
-
 # Derived fields
 info_democracy <- info_democracy %>% 
   mutate(x_researched = !is.na(donor_id),
@@ -259,6 +251,16 @@ info_democracy <- info_democracy %>%
                                        x_donation_date,
                                        sep = '_'),
                                  digest))
+
+# Add x_is_reported_pre_poll field
+reporting_periods <- read_csv("Data/reporting_periods.csv",
+                              col_types = cols(
+                                dntn_reporting_period_name = col_character(),
+                                x_is_reported_pre_poll = col_logical()
+                              ))
+
+info_democracy <- info_democracy %>% 
+  left_join(reporting_periods, by = 'dntn_reporting_period_name')
 
 # Save --------------------------------------------------------------------
 write_csv(info_democracy, 'Output/info_democracy.csv')
