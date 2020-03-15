@@ -7,7 +7,6 @@ library(tidyr)
 library(purrr)
 library(stringr)
 library(lubridate)
-library(digest)
 
 # Donations ---------------------------------------------------------------
 ec_donations <- read_csv("Data/ec_donations_raw.csv",
@@ -241,16 +240,6 @@ info_democracy <- info_democracy %>%
          x_donation_month = month(x_donation_date),
          x_donation_quarter = quarter(x_donation_date)
          )
-
-# Create unique id for donation - To check same donation does not appear twice in pre or post poll data
-info_democracy <- info_democracy %>% 
-  mutate(x_donation_id = map_chr(paste(dntn_donor_name,
-                                       dntn_regulated_entity_name,
-                                       dntn_accounting_unit_name,
-                                       dntn_value,
-                                       x_donation_date,
-                                       sep = '_'),
-                                 digest))
 
 # Add x_is_reported_pre_poll field
 reporting_periods <- read_csv("Data/reporting_periods.csv",
